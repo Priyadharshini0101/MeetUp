@@ -89,7 +89,7 @@ class signup : AppCompatActivity() {
                     Log.d(TAG, "signInWithCredential:success")
                     val user=auth.currentUser
                     //Database update
-                    savetoFirebaseatabase(user!!.email.toString(),user!!.displayName.toString())
+                    savetoFirebaseatabase(user!!.email.toString(),user!!.displayName.toString(),"")
                     val intent= Intent(this,home::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
@@ -118,7 +118,7 @@ class signup : AppCompatActivity() {
                 if(!it.isSuccessful) return@addOnCompleteListener
                 Toast.makeText(this,"Welcome "+username+"!",Toast.LENGTH_LONG).show()
                 Log.d("SignUp","${it.result?.user?.uid}")
-                savetoFirebaseatabase(username, email)
+                savetoFirebaseatabase(username, email,password)
                 val intent= Intent(this,home::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
@@ -129,10 +129,10 @@ class signup : AppCompatActivity() {
             }
     }
 
-    private fun savetoFirebaseatabase(username:String,email:String) {
+    private fun savetoFirebaseatabase(username:String,email:String,password:String) {
         val uid=FirebaseAuth.getInstance().uid?: ""
         val ref= FirebaseDatabase.getInstance().getReference("/users/$uid")
-        val user=User(username,email)
+        val user=User(username,email,password)
         ref.setValue(user)
             .addOnSuccessListener{
                 Log.d("SignUp","Finally we saved the user to Firebase Database")
