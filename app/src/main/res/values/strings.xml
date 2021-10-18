@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MeetUp</string>
+    <string name="client_id" translatable="false">690493792343-529rjos66qcji22mnnm9v3quse1tfgd6.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://meetup-a3852-default-rtdb.firebaseio.com</string>
+    <string name="project_number" translatable="false">690493792343</string>
+    <string name="current_key" translatable="false">AIzaSyB72bVXs9edOC5wkctg7ctObZZB_B05-qQ</string>
+    <string name="mobilesdk_app_id" translatable="false">1:690493792343:android:6c4295e03701cac7b48312</string>
+    <string name="storage_bucket" translatable="false">meetup-a3852.appspot.com</string>
+
+</resources>
