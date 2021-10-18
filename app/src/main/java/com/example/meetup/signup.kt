@@ -27,7 +27,7 @@ class signup : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 // ...
 // Initialize Firebase Auth
-
+//Merging1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.signuppage)
