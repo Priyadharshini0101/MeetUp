@@ -27,6 +27,7 @@ class signup : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 // ...
 // Initialize Firebase Auth
+//Merging
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
