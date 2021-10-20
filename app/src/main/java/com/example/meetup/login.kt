@@ -15,6 +15,8 @@ class login : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.loginpage)
 
+        supportActionBar!!.hide()
+
         findViewById<Button>(R.id.login).setOnClickListener{
             performLogin()
         }
@@ -22,8 +24,10 @@ class login : AppCompatActivity() {
         findViewById<TextView>(R.id.signpage1).setOnClickListener {
             val intent= Intent(this,signup::class.java)
             startActivity(intent)
+            finish()
         }
     }
+
     private fun performLogin(){
         val email=findViewById<EditText>(R.id.email).text.toString()
         val password=findViewById<EditText>(R.id.password).text.toString()
@@ -42,14 +46,11 @@ class login : AppCompatActivity() {
                 val intent= Intent(this,home::class.java)
                 intent.flags= Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
-
-
+                finish()
             }
 
             .addOnFailureListener{
                 Toast.makeText(this,"${it.message}", Toast.LENGTH_LONG).show()
             }
-
-
     }
 }

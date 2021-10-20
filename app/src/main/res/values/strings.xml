@@ -6,5 +6,7 @@
     <string name="current_key" translatable="false">AIzaSyB72bVXs9edOC5wkctg7ctObZZB_B05-qQ</string>
     <string name="mobilesdk_app_id" translatable="false">1:690493792343:android:6c4295e03701cac7b48312</string>
     <string name="storage_bucket" translatable="false">meetup-a3852.appspot.com</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

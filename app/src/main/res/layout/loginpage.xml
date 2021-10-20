@@ -9,17 +9,15 @@
 
 
     <TextView
-        android:id="@+id/appname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="152dp"
-        android:layout_marginLeft="152dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="sans-serif-thin"
+        android:id="@+id/textView7"
+        android:layout_width="153dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="100dp"
+        android:fontFamily="sans-serif-condensed-medium"
         android:text="MeetUp"
-        android:textColor="@color/black"
-        android:textSize="24dp"
-        android:textStyle="bold"
+        android:textSize="48dp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,14 +25,14 @@
         android:id="@+id/email"
         android:layout_width="350dp"
         android:layout_height="50dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="64dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appname" />
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <EditText
         android:id="@+id/password"
@@ -65,27 +63,27 @@
 
     <TextView
         android:id="@+id/ask"
-        android:layout_width="201dp"
-        android:layout_height="22dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="190dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginLeft="84dp"
+        android:layout_marginTop="32dp"
         android:text="Don't have an account?"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.352"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login" />
 
     <TextView
         android:id="@+id/signpage1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="84dp"
+        android:layout_marginRight="84dp"
         android:text="SignUp"
         android:textColor="@color/blue"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.761"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login" />
 
 

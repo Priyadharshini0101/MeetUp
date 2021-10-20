@@ -6,4 +6,29 @@
     android:layout_height="match_parent"
     android:background="#eeeade"
     tools:context=".signup">
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="411dp"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/navigationmenu"
+        app:itemRippleColor="@color/black"
+        app:labelVisibilityMode="unlabeled"
+        app:itemTextColor="@color/black"
+        app:itemIconTint="@drawable/selector" />
+
+    <fragment
+        android:id="@+id/fragmentContainerView"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="411dp"
+        android:layout_height="682dp"
+        app:defaultNavHost="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/mynav" />
 </androidx.constraintlayout.widget.ConstraintLayout>
