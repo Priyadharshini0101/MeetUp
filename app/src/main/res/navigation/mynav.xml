@@ -21,18 +21,10 @@
         tools:layout="@layout/posts" >
         <action
             android:id="@+id/action_chatting_to_friends"
-            app:destination="@id/friends" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/friends"
-        android:name="com.example.meetup.chatfeeds"
-        android:label="friends"
-        tools:layout="@layout/chat" >
-        <action
-            android:id="@+id/action_friends_to_profile"
             app:destination="@id/profile" />
     </fragment>
+
+
     <fragment
         android:id="@+id/profile"
         android:name="com.example.meetup.profile"

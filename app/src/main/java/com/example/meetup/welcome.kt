@@ -98,9 +98,8 @@ class welcome : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     val user=auth.currentUser
-                    savetoFirebaseatabase(user!!.email.toString(),user!!.displayName.toString(),"")
-                    val intent= Intent(this,home::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    savetoFirebaseatabase(user!!.uid,user!!.displayName.toString(),user!!.email.toString(),user!!.photoUrl.toString())
+                    val intent= Intent(this,Interested::class.java)
                     startActivity(intent)
                     finish()
 
@@ -112,10 +111,9 @@ class welcome : AppCompatActivity() {
             }
     }
 
-    private fun savetoFirebaseatabase(username:String,email:String,password:String) {
-        val uid=FirebaseAuth.getInstance().uid?: ""
+    private fun savetoFirebaseatabase(uid:String,username:String,email:String,profile:String) {
         val ref= FirebaseDatabase.getInstance().getReference("/users/$uid")
-        val user=User(username,email,password)
+        val user=User(uid,username,email,profile)
         ref.setValue(user)
             .addOnSuccessListener{
                 Log.d("SignUp","Finally we saved the user to Firebase Database")

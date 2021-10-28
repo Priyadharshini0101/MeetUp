@@ -1,10 +1,18 @@
 package com.example.meetup
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.view.*
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.profile.*
+import kotlinx.android.synthetic.main.profile1.*
+import kotlinx.android.synthetic.main.profile1.view.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,8 +42,106 @@ class profile : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.profile, container, false)
+        val rootView= inflater.inflate(R.layout.profile1, container, false)
+
+        rootView.editprofile.setOnClickListener {
+            activity?.let {
+                val intent=Intent(it,EditProfile::class.java)
+                it.startActivity(intent)
+            }
+        }
+
+        val uid=FirebaseAuth.getInstance().uid
+
+
+
+        val ref1 = FirebaseDatabase.getInstance().getReference("/users/$uid")
+
+        ref1.addListenerForSingleValueEvent(object : ValueEventListener {
+            @RequiresApi(Build.VERSION_CODES.P)
+            override fun onDataChange(p0: DataSnapshot) {
+                val user=p0.getValue(User::class.java)
+                if (user != null) {
+                    if (user.profilepic!="") {
+                        displayname.setText(user.name)
+                        Picasso.with(context).load(user.profilepic).into(dp)
+                        val interests= user.Interested_in.toString()
+                        interested.text=interests.subSequence(1,interests.length-1)
+
+                    } else {
+                        displayname.setText(user.name)
+                        val interests= user.Interested_in.toString()
+                        interested.text=interests.subSequence(1,interests.length-1)
+                    }
+                   loading_spinner1.visibility = View.GONE
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+        val ref2 = FirebaseDatabase.getInstance().getReference("/users/")
+        ref2.addChildEventListener(object : ChildEventListener {
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                snapshot.children.forEach {
+                    val user = snapshot.getValue(User::class.java)
+                    if (user != null && user.uid == FirebaseAuth.getInstance().uid) {
+                        if (user.profilepic !=null) {
+                            displayname.setText(user.name)
+                            Picasso.with(context).load(user.profilepic).into(dp)
+                            val interests= user.Interested_in.toString()
+                            interested.text=interests.subSequence(1,interests.length-1)
+
+
+
+                        } else {
+                            displayname.text = user.name
+                            val interests= user.Interested_in.toString()
+                            interested.text=interests.subSequence(1,interests.length-1)
+                        }
+                       loading_spinner1.visibility = View.GONE
+                    }
+                }
+            }
+
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+
+        setHasOptionsMenu(true)
+        return rootView
     }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item?.itemId){
+            R.id.action_settings -> {
+                activity?.let {
+                    val intent = Intent(it, Settings::class.java)
+                    it.startActivity(intent)
+                }
+            }
+            }
+
+        return super.onOptionsItemSelected(item)
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+         inflater.inflate(R.menu.settingmenu,menu)
+        return super.onCreateOptionsMenu(menu,inflater)
+    }
+
 
     companion object {
         /**
@@ -57,3 +163,5 @@ class profile : Fragment() {
             }
     }
 }
+
+

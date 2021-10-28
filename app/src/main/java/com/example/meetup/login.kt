@@ -43,8 +43,7 @@ class login : AppCompatActivity() {
                 if(!it.isSuccessful) return@addOnCompleteListener
                 Toast.makeText(this,"Logged Successfully", Toast.LENGTH_LONG).show()
                 Log.d("Login","${it.result?.user?.uid}")
-                val intent= Intent(this,home::class.java)
-                intent.flags= Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                val intent= Intent(this,Interested::class.java)
                 startActivity(intent)
                 finish()
             }
@@ -52,5 +51,11 @@ class login : AppCompatActivity() {
             .addOnFailureListener{
                 Toast.makeText(this,"${it.message}", Toast.LENGTH_LONG).show()
             }
+    }
+    @Override
+    override fun onBackPressed() {
+        val intent =Intent(this@login,welcome::class.java)
+        startActivity(intent)
+        finish()
     }
 }
