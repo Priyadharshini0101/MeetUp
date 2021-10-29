@@ -1,14 +1,18 @@
 package com.example.meetup
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
+import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.profile.*
 import kotlinx.android.synthetic.main.profile1.*
@@ -55,7 +59,7 @@ class profile : Fragment() {
 
 
 
-        val ref1 = FirebaseDatabase.getInstance().getReference("/users/$uid")
+        val ref1 = FirebaseDatabase.getInstance().getReference("/Users/$uid")
 
         ref1.addListenerForSingleValueEvent(object : ValueEventListener {
             @RequiresApi(Build.VERSION_CODES.P)
@@ -65,23 +69,23 @@ class profile : Fragment() {
                     if (user.profilepic!="") {
                         displayname.setText(user.name)
                         Picasso.with(context).load(user.profilepic).into(dp)
-                        val interests= user.Interested_in.toString()
-                        interested.text=interests.subSequence(1,interests.length-1)
+//                        val interests= user..toString()
+//                        interested.text=interests.subSequence(1,interests.length-1)
 
                     } else {
                         displayname.setText(user.name)
-                        val interests= user.Interested_in.toString()
-                        interested.text=interests.subSequence(1,interests.length-1)
+//                        val interests= user.Interested_in.toString()
+//                        interested.text=interests.subSequence(1,interests.length-1)
                     }
                    loading_spinner1.visibility = View.GONE
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+
             }
         })
-        val ref2 = FirebaseDatabase.getInstance().getReference("/users/")
+        val ref2 = FirebaseDatabase.getInstance().getReference("/Users/")
         ref2.addChildEventListener(object : ChildEventListener {
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
                 snapshot.children.forEach {
@@ -90,15 +94,13 @@ class profile : Fragment() {
                         if (user.profilepic !=null) {
                             displayname.setText(user.name)
                             Picasso.with(context).load(user.profilepic).into(dp)
-                            val interests= user.Interested_in.toString()
-                            interested.text=interests.subSequence(1,interests.length-1)
+
 
 
 
                         } else {
                             displayname.text = user.name
-                            val interests= user.Interested_in.toString()
-                            interested.text=interests.subSequence(1,interests.length-1)
+
                         }
                        loading_spinner1.visibility = View.GONE
                     }
@@ -129,11 +131,25 @@ class profile : Fragment() {
         when(item?.itemId){
             R.id.action_settings -> {
                 activity?.let {
-                    val intent = Intent(it, Settings::class.java)
-                    it.startActivity(intent)
+                    val alert: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(it)
+                        alert.setMessage("Are you sure you want to Signout?")
+                            .setPositiveButton("YES", DialogInterface.OnClickListener { dialog, which ->
+                                Firebase.auth.signOut()
+                                val intent=Intent(it,welcome::class.java)
+                                intent.flags= Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startActivity(intent)
+
+                            }).setNegativeButton("NO", null)
+
+                        val alert1: android.app.AlertDialog? = alert.create()
+                        if (alert1 != null) {
+                            alert1.show()
+                        }
+
+                    }
                 }
             }
-            }
+
 
         return super.onOptionsItemSelected(item)
     }

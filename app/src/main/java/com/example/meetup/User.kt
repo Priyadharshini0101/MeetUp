@@ -1,25 +1,13 @@
 package com.example.meetup
 
- class User(val uid:String,val name: String, val email: String, val profilepic:String?=null,val Interested_in:ArrayList<String>?=null) {
-    constructor() : this("","", "")
-}
-class Sports(val uid:String,val name: String, val email: String, val profilepic:String?=null) {
-    constructor() : this("","", "")
-}
-class Technology(val uid:String,val name: String, val email: String, val profilepic:String?=null) {
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+ class User(val uid:String,val name: String, val email: String, val profilepic:String?=null,val interested:String?=null):Parcelable {
     constructor() : this("","", "")
 }
 
-class Music(val uid:String,val name: String, val email: String, val profilepic:String?=null) {
-    constructor() : this("","", "")
+class ChatMessage(val id:String,val fromId:String,val text:String,val toId:String,val timeStamp:Long){
+    constructor():this("","","","",-1)
 }
-
-class Arts(val uid:String,val name: String, val email: String, val profilepic:String?=null) {
-    constructor() : this("","", "")
-}
-
-class Entertainment(val uid:String,val name: String, val email: String, val profilepic:String?=null) {
-    constructor() : this("","", "")
-}
-
-

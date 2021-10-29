@@ -8,5 +8,10 @@
     <string name="storage_bucket" translatable="false">meetup-a3852.appspot.com</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="category_sports">Sports</string>
+    <string name="category_technology">Technology</string>
+    <string name="category_music">Music</string>
+    <string name="category_arts">Arts</string>
+    <string name="category_traveling">Traveling</string>
 
 </resources>

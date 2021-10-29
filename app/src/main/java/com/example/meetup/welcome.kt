@@ -112,7 +112,7 @@ class welcome : AppCompatActivity() {
     }
 
     private fun savetoFirebaseatabase(uid:String,username:String,email:String,profile:String) {
-        val ref= FirebaseDatabase.getInstance().getReference("/users/$uid")
+        val ref= FirebaseDatabase.getInstance().getReference("/Users/$uid")
         val user=User(uid,username,email,profile)
         ref.setValue(user)
             .addOnSuccessListener{

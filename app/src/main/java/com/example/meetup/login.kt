@@ -43,7 +43,7 @@ class login : AppCompatActivity() {
                 if(!it.isSuccessful) return@addOnCompleteListener
                 Toast.makeText(this,"Logged Successfully", Toast.LENGTH_LONG).show()
                 Log.d("Login","${it.result?.user?.uid}")
-                val intent= Intent(this,Interested::class.java)
+                val intent= Intent(this,home::class.java)
                 startActivity(intent)
                 finish()
             }

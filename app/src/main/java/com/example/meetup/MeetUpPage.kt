@@ -1,10 +1,33 @@
 package com.example.meetup
 
+import android.R.attr.key
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.Intent.getIntent
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
+import android.view.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
+import com.xwray.groupie.Item
+import kotlinx.android.synthetic.main.feeds.*
+import kotlinx.android.synthetic.main.homepage.*
+import kotlinx.android.synthetic.main.meetup.view.*
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,10 +57,86 @@ class Feeds : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.meetup, container, false)
+
+
+        val rootView =inflater.inflate(R.layout.meetup, container, false)
+//        val user=intent.getParcelableExtra<User>(Interested.USER_KEY)
+        val recyclerView=  rootView.recycleView
+        val adapter= GroupAdapter<GroupieViewHolder>()
+
+
+        val uid=FirebaseAuth.getInstance().uid
+        var currentUser1= FirebaseDatabase.getInstance().getReference("/Users/$uid")
+        currentUser1.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                Feeds.currentUser =snapshot.getValue(User::class.java)
+                if(Feeds.currentUser?.interested!=null){
+                    Feeds.interest = Feeds.currentUser!!.interested.toString()
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+
+        Log.d("Dhanush","${Feeds.interest}")
+        val ref= FirebaseDatabase.getInstance().getReference("/Users")
+        ref.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(p0: DataSnapshot) {
+                p0.children.forEach {
+                    val user = it.getValue(User::class.java)
+                    if (user != null && user.uid!= FirebaseAuth.getInstance().uid && user.interested== Feeds.interest) {
+
+                        adapter.add(UserItem(user))
+                    }
+                }
+                adapter.setOnItemClickListener { item, view ->
+
+                    val userItem=item as UserItem
+                    val intent= Intent(view.context, Profile1::class.java)
+                    intent.putExtra(Feeds.USER_KEY,userItem.user)
+                    startActivity(intent)
+
+
+
+                }
+
+                recyclerView.adapter = adapter
+            }
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+        return rootView
+
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item?.itemId){
+            R.id.action_requests -> {
+                activity?.let {
+
+
+                }
+            }
+        }
+
+
+        return super.onOptionsItemSelected(item)
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.homemenu,menu)
+        return super.onCreateOptionsMenu(menu,inflater)
     }
 
+
+
+
     companion object {
+        var currentUser:User?=null
+        var interest:String?=null
+        val USER_KEY="MeetUpPage"
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
@@ -49,11 +148,25 @@ class Feeds : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            Feeds().apply {
+            profile().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
                 }
             }
+        }
+    }
+
+
+
+    class UserItem(val user:User): Item<GroupieViewHolder>(){
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+        viewHolder.itemView.findViewById<TextView>(R.id.displaynamefeeds).text = user.name
+            Picasso.with(viewHolder.itemView.context).load(user.profilepic)
+                .into(viewHolder.itemView.findViewById<ImageView>(R.id.dpfeeds))
+        }
+
+    override fun getLayout(): Int {
+        return R.layout.feeds
     }
 }
