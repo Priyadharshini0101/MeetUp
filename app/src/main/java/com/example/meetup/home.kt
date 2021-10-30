@@ -18,6 +18,7 @@ class home : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.homepage)
+
         verifyUserLoginDetails()
 
       navigate()

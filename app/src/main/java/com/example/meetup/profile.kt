@@ -69,13 +69,12 @@ class profile : Fragment() {
                     if (user.profilepic!="") {
                         displayname.setText(user.name)
                         Picasso.with(context).load(user.profilepic).into(dp)
-//                        val interests= user..toString()
-//                        interested.text=interests.subSequence(1,interests.length-1)
+
+                        interested.text=user.interested.toString()
 
                     } else {
                         displayname.setText(user.name)
-//                        val interests= user.Interested_in.toString()
-//                        interested.text=interests.subSequence(1,interests.length-1)
+                        interested.text=user.interested.toString()
                     }
                    loading_spinner1.visibility = View.GONE
                 }

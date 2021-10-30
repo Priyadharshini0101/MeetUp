@@ -1,14 +1,11 @@
 package com.example.meetup
 
-import android.R.attr.key
-import android.content.DialogInterface
+
 import android.content.Intent
-import android.content.Intent.getIntent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Button
+
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -43,14 +40,17 @@ class Feeds : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    var interesting:ArrayList<String>?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+            interesting=it.getParcelable(Interested.USER_KEY1)
+
         }
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,7 +60,9 @@ class Feeds : Fragment() {
 
 
         val rootView =inflater.inflate(R.layout.meetup, container, false)
-//        val user=intent.getParcelableExtra<User>(Interested.USER_KEY)
+
+        Log.d("Dhanush","$interesting")
+//        interesting=getParcelableExtra<ArrayList>(Interested.USER_KEY1)
         val recyclerView=  rootView.recycleView
         val adapter= GroupAdapter<GroupieViewHolder>()
 
@@ -71,7 +73,7 @@ class Feeds : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 Feeds.currentUser =snapshot.getValue(User::class.java)
                 if(Feeds.currentUser?.interested!=null){
-                    Feeds.interest = Feeds.currentUser!!.interested.toString()
+                    Feeds.interest = Feeds.currentUser!!.interested
                 }
 
             }
@@ -82,20 +84,31 @@ class Feeds : Fragment() {
         })
 
         Log.d("Dhanush","${Feeds.interest}")
+
         val ref= FirebaseDatabase.getInstance().getReference("/Users")
         ref.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 p0.children.forEach {
                     val user = it.getValue(User::class.java)
-                    if (user != null && user.uid!= FirebaseAuth.getInstance().uid && user.interested== Feeds.interest) {
+                    var k=0
 
-                        adapter.add(UserItem(user))
-                    }
+
+                        if (user != null && user.uid != FirebaseAuth.getInstance().uid){
+                            for (i in interest!!) {
+                                for(j in user.interested!!)
+                            if(i==j) {
+                               ++k
+                            }
+                            }
+                            if(k>0){
+                                adapter.add(UserItem(user))
+                            }
+                }
                 }
                 adapter.setOnItemClickListener { item, view ->
 
                     val userItem=item as UserItem
-                    val intent= Intent(view.context, Profile1::class.java)
+                    val intent= Intent(view.context, ChatLog::class.java)
                     intent.putExtra(Feeds.USER_KEY,userItem.user)
                     startActivity(intent)
 
@@ -109,25 +122,9 @@ class Feeds : Fragment() {
 
             }
         })
+
         return rootView
 
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item?.itemId){
-            R.id.action_requests -> {
-                activity?.let {
-
-
-                }
-            }
-        }
-
-
-        return super.onOptionsItemSelected(item)
-    }
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.homemenu,menu)
-        return super.onCreateOptionsMenu(menu,inflater)
     }
 
 
@@ -135,7 +132,7 @@ class Feeds : Fragment() {
 
     companion object {
         var currentUser:User?=null
-        var interest:String?=null
+        var interest:ArrayList<String>?=null
         val USER_KEY="MeetUpPage"
         /**
          * Use this factory method to create a new instance of
@@ -161,6 +158,8 @@ class Feeds : Fragment() {
 
     class UserItem(val user:User): Item<GroupieViewHolder>(){
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+
+        viewHolder.itemView.findViewById<TextView>(R.id.interestedfeeds).text= user.interested.toString()
         viewHolder.itemView.findViewById<TextView>(R.id.displaynamefeeds).text = user.name
             Picasso.with(viewHolder.itemView.context).load(user.profilepic)
                 .into(viewHolder.itemView.findViewById<ImageView>(R.id.dpfeeds))

@@ -65,13 +65,13 @@ class chatting : Fragment() {
             val row = item as LatestMessage
 
 
-            intent.putExtra(Profile1.USER_KEY1, row.chatPartnerUser)
+            intent.putExtra(Feeds.USER_KEY, row.chatPartnerUser)
 
             startActivity(intent)
         }
         listentoMessage()
         fetchCurrentUser()
-
+        setHasOptionsMenu(true)
         return rootView
     }
 
@@ -173,6 +173,23 @@ class LatestMessage(val chatMessage: ChatMessage) : Item<GroupieViewHolder>(){
         return R.layout.newmessage
     }
 }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item?.itemId){
+            R.id.action_newmessage -> {
+                activity?.let {
+
+
+                }
+            }
+        }
+
+
+        return super.onOptionsItemSelected(item)
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.messagemenu,menu)
+        return super.onCreateOptionsMenu(menu,inflater)
+    }
 
 
     companion object {
