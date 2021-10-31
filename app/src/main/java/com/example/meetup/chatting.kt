@@ -53,149 +53,118 @@ class chatting : Fragment() {
         val recyclerView = rootView.recycleView
 
         recyclerView.adapter = adapter
-        recyclerView.addItemDecoration(
-            DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
-        )
+        recyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
 
         adapter.setOnItemClickListener { item, view ->
-
             intent = true
-
             val intent = Intent(view.context, ChatLog::class.java)
             val row = item as LatestMessage
-
-
             intent.putExtra(Feeds.USER_KEY, row.chatPartnerUser)
-
             startActivity(intent)
         }
+
         listentoMessage()
         fetchCurrentUser()
         setHasOptionsMenu(true)
         return rootView
     }
 
-val latestMessageHashMap=HashMap<String, ChatMessage>()
-    val adapter= GroupAdapter<GroupieViewHolder>()
-private fun refreshTheLatestMessage(){
-    adapter.clear()
+    val latestMessageHashMap = HashMap<String, ChatMessage>()
+    val adapter = GroupAdapter<GroupieViewHolder>()
+    private fun refreshTheLatestMessage() {
+        adapter.clear()
 
-    latestMessageHashMap.values.forEach{
-        adapter.add(LatestMessage(it))
-
-        Log.d("ChatMessage.text",it.text)
+        latestMessageHashMap.values.forEach {
+            adapter.add(LatestMessage(it))
+            Log.d("ChatMessage.text", it.text)
+        }
     }
-//    recentMessage(latestMessageHashMap)
-}
 
 
-private fun listentoMessage(){
-    val fromId= FirebaseAuth.getInstance().uid
-
-    val ref= FirebaseDatabase.getInstance().getReference("/latestMessage/$fromId/")
-    ref.addChildEventListener(object : ChildEventListener {
-        override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-            val chatMessage=snapshot.getValue(ChatMessage::class.java) ?: return
-            latestMessageHashMap[snapshot.key!!]=chatMessage
-            refreshTheLatestMessage()
-        }
-
-        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-            val chatMessage=snapshot.getValue(ChatMessage::class.java) ?: return
-            latestMessageHashMap[snapshot.key!!]=chatMessage
-            refreshTheLatestMessage()
-        }
-        override fun onChildRemoved(snapshot: DataSnapshot) {
-
-        }
-        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-
-        }
-        override fun onCancelled(error: DatabaseError) {
-
-        }
-    })
-}
-
-
-
-private fun fetchCurrentUser(){
-    val uid= FirebaseAuth.getInstance().uid
-    var currentUser1= FirebaseDatabase.getInstance().getReference("/Users/$uid")
-    currentUser1.addListenerForSingleValueEvent(object : ValueEventListener {
-        override fun onDataChange(snapshot: DataSnapshot) {
-            currentUser=snapshot.getValue(User::class.java)
-
-        }
-
-        override fun onCancelled(error: DatabaseError) {
-
-        }
-    })
-
-}
-
-class LatestMessage(val chatMessage: ChatMessage) : Item<GroupieViewHolder>(){
-    var chatPartnerUser:User?=null
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        viewHolder.itemView.findViewById<TextView>(R.id.newmessagetext).text=chatMessage.text
-        val chatPartnerId:String
-        if(chatMessage.fromId== FirebaseAuth.getInstance().uid ) {
-            chatPartnerId=chatMessage.toId
-
-
-        }else {
-            chatPartnerId = chatMessage.fromId
-
-
-        }
-
-        val ref= FirebaseDatabase.getInstance().getReference("/Users/$chatPartnerId")
-        ref.addListenerForSingleValueEvent(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot){
-                chatPartnerUser=snapshot.getValue(User::class.java)
-
-
-                viewHolder.itemView.findViewById<TextView>(R.id.newmessagename).text=chatPartnerUser?.name
-                val displayPicture=viewHolder.itemView.findViewById<CircleImageView>(R.id.newmessageimage)
-                Picasso.with(viewHolder.itemView.context).load(chatPartnerUser?.profilepic).into(displayPicture)
+    private fun listentoMessage() {
+        val fromId = FirebaseAuth.getInstance().uid
+        val ref = FirebaseDatabase.getInstance().getReference("/latestMessage/$fromId/")
+        ref.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val chatMessage = snapshot.getValue(ChatMessage::class.java) ?: return
+                latestMessageHashMap[snapshot.key!!] = chatMessage
+                refreshTheLatestMessage()
             }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                val chatMessage = snapshot.getValue(ChatMessage::class.java) ?: return
+                latestMessageHashMap[snapshot.key!!] = chatMessage
+                refreshTheLatestMessage()
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+
+            }
+
             override fun onCancelled(error: DatabaseError) {
 
             }
+        })
+    }
 
+    private fun fetchCurrentUser() {
+        val uid = FirebaseAuth.getInstance().uid
+        var currentUser1 = FirebaseDatabase.getInstance().getReference("/Users/$uid")
+        currentUser1.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                currentUser = snapshot.getValue(User::class.java)
+            }
 
+            override fun onCancelled(error: DatabaseError) {
+
+            }
         })
 
     }
 
-    override fun getLayout(): Int {
-        return R.layout.newmessage
-    }
-}
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item?.itemId){
-            R.id.action_newmessage -> {
-                activity?.let {
-                   val intent=Intent(it,NewMessage::class.java)
-                    startActivity(intent)
+    class LatestMessage(val chatMessage: ChatMessage) : Item<GroupieViewHolder>() {
+        var chatPartnerUser: User? = null
+        override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+            viewHolder.itemView.findViewById<TextView>(R.id.newmessagetext).text = chatMessage.text
+            val chatPartnerId: String
+            if (chatMessage.fromId == FirebaseAuth.getInstance().uid) {
+                chatPartnerId = chatMessage.toId
+            } else {
+                chatPartnerId = chatMessage.fromId
+            }
+
+            val ref = FirebaseDatabase.getInstance().getReference("/Users/$chatPartnerId")
+            ref.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    chatPartnerUser = snapshot.getValue(User::class.java)
+                    viewHolder.itemView.findViewById<TextView>(R.id.newmessagename).text =
+                        chatPartnerUser?.name
+                    val displayPicture =
+                        viewHolder.itemView.findViewById<CircleImageView>(R.id.newmessageimage)
+                    Picasso.with(viewHolder.itemView.context).load(chatPartnerUser?.profilepic)
+                        .into(displayPicture)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
 
                 }
-            }
+            })
         }
 
-
-        return super.onOptionsItemSelected(item)
-    }
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.messagemenu,menu)
-        return super.onCreateOptionsMenu(menu,inflater)
+        override fun getLayout(): Int {
+            return R.layout.newmessage
+        }
     }
 
 
     companion object {
-        var currentUser:User?=null
-        val USER_KEY="Intent to chat Log"
+        var currentUser: User? = null
+        val USER_KEY = "Intent to chat Log"
+
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.

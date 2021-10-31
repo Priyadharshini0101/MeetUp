@@ -46,11 +46,11 @@ class profile : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val rootView= inflater.inflate(R.layout.profile, container, false)
+        val rootView = inflater.inflate(R.layout.profile, container, false)
 
         rootView.editprofile.setOnClickListener {
             activity?.let {
-                val intent=Intent(it,EditProfile::class.java)
+                val intent = Intent(it, EditProfile::class.java)
                 it.startActivity(intent)
             }
         }
@@ -62,90 +62,91 @@ class profile : Fragment() {
             }
         }
 
-            val uid = FirebaseAuth.getInstance().uid
-            val ref1 = FirebaseDatabase.getInstance().getReference("/Users/$uid")
+        val uid = FirebaseAuth.getInstance().uid
+        val ref1 = FirebaseDatabase.getInstance().getReference("/Users/$uid")
 
-            ref1.addListenerForSingleValueEvent(object : ValueEventListener {
-                @RequiresApi(Build.VERSION_CODES.P)
-                override fun onDataChange(p0: DataSnapshot) {
-                    val user = p0.getValue(User::class.java)
-                    if (user != null) {
-                        if (user.profilepic != "") {
+        ref1.addListenerForSingleValueEvent(object : ValueEventListener {
+            @RequiresApi(Build.VERSION_CODES.P)
+            override fun onDataChange(p0: DataSnapshot) {
+                val user = p0.getValue(User::class.java)
+                if (user != null) {
+                    if (user.profilepic != "") {
+                        displayname.setText(user.name)
+                        Picasso.with(context).load(user.profilepic).into(dp)
+                        val interest = user.interested.toString()
+                        interested.text = interest.subSequence(1, interest.length - 1)
+                        aboutprofile.text = user.about.toString()
+
+                    } else {
+                        displayname.setText(user.name)
+                        interested.text = user.interested.toString()
+                        aboutprofile.text = user.about.toString()
+                    }
+                    loading_spinner1.visibility = View.GONE
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+
+        val ref2 = FirebaseDatabase.getInstance().getReference("/Users/")
+
+        ref2.addChildEventListener(object : ChildEventListener {
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                snapshot.children.forEach {
+                    val user = snapshot.getValue(User::class.java)
+                    if (user != null && user.uid == FirebaseAuth.getInstance().uid) {
+                        if (user.profilepic != null) {
                             displayname.setText(user.name)
                             Picasso.with(context).load(user.profilepic).into(dp)
-                            interested.text = user.interested.toString()
-                            aboutprofile.text=user.about.toString()
-
+                            aboutprofile.text = user.about.toString()
                         } else {
-                            displayname.setText(user.name)
-                            interested.text = user.interested.toString()
-                            aboutprofile.text=user.about.toString()
+                            displayname.text = user.name
+                            aboutprofile.text = user.about.toString()
                         }
                         loading_spinner1.visibility = View.GONE
                     }
                 }
+            }
 
-                override fun onCancelled(error: DatabaseError) {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
 
-                }
-            })
+            }
 
-            val ref2 = FirebaseDatabase.getInstance().getReference("/Users/")
+            override fun onChildRemoved(snapshot: DataSnapshot) {
 
-            ref2.addChildEventListener(object : ChildEventListener {
-                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                    snapshot.children.forEach {
-                        val user = snapshot.getValue(User::class.java)
-                        if (user != null && user.uid == FirebaseAuth.getInstance().uid) {
-                            if (user.profilepic != null) {
-                                displayname.setText(user.name)
-                                Picasso.with(context).load(user.profilepic).into(dp)
-                                aboutprofile.text=user.about.toString()
-                            } else {
-                                displayname.text = user.name
-                                aboutprofile.text=user.about.toString()
-                            }
-                            loading_spinner1.visibility = View.GONE
-                        }
-                    }
-                }
+            }
 
-                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
 
-                }
+            }
 
-                override fun onChildRemoved(snapshot: DataSnapshot) {
+            override fun onCancelled(error: DatabaseError) {
 
-                }
+            }
+        })
 
-                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+        rootView.logout.setOnClickListener {
+            activity?.let {
+                val alert: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(it)
+                alert.setMessage("Are you sure you want to Signout?")
+                    .setPositiveButton("YES", DialogInterface.OnClickListener { dialog, which ->
+                        Firebase.auth.signOut()
+                        val intent = Intent(it, welcome::class.java)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
 
-                }
+                    }).setNegativeButton("NO", null)
 
-                override fun onCancelled(error: DatabaseError) {
-
-                }
-            })
-
-            rootView.logout.setOnClickListener {
-                activity?.let {
-                    val alert: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(it)
-                    alert.setMessage("Are you sure you want to Signout?")
-                        .setPositiveButton("YES", DialogInterface.OnClickListener { dialog, which ->
-                            Firebase.auth.signOut()
-                            val intent = Intent(it, welcome::class.java)
-                            intent.flags =
-                                Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-
-                        }).setNegativeButton("NO", null)
-
-                    val alert1: android.app.AlertDialog? = alert.create()
-                    if (alert1 != null) {
-                        alert1.show()
-                    }
+                val alert1: android.app.AlertDialog? = alert.create()
+                if (alert1 != null) {
+                    alert1.show()
                 }
             }
+        }
 
         return rootView
     }

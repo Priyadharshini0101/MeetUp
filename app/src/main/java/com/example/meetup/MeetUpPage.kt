@@ -60,26 +60,19 @@ class Feeds : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        val rootView = inflater.inflate(R.layout.meetup, container, false)
+        val recyclerView = rootView.recycleView
+        val adapter = GroupAdapter<GroupieViewHolder>()
 
-
-        val rootView =inflater.inflate(R.layout.meetup, container, false)
-
-
-//        interesting=getParcelableExtra<ArrayList>(Interested.USER_KEY1)
-        val recyclerView=  rootView.recycleView
-        val adapter= GroupAdapter<GroupieViewHolder>()
-
-
-        val uid=FirebaseAuth.getInstance().uid
-        var currentUser1= FirebaseDatabase.getInstance().getReference("/Users/$uid")
+        val uid = FirebaseAuth.getInstance().uid
+        var currentUser1 = FirebaseDatabase.getInstance().getReference("/Users/$uid")
         currentUser1.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                Feeds.currentUser =snapshot.getValue(User::class.java)
-                if(Feeds.currentUser?.interested!=null){
+                Feeds.currentUser = snapshot.getValue(User::class.java)
+                if (Feeds.currentUser?.interested != null) {
                     Feeds.interest = Feeds.currentUser!!.interested
-                    Feeds.about=Feeds.currentUser!!.about
+                    Feeds.about = Feeds.currentUser!!.about
                 }
-
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -87,59 +80,49 @@ class Feeds : Fragment() {
             }
         })
 
-
-        Log.d("Dhanush","${Feeds.interest}")
-
-        val ref= FirebaseDatabase.getInstance().getReference("/Users")
-        ref.addListenerForSingleValueEvent(object: ValueEventListener {
+        val ref = FirebaseDatabase.getInstance().getReference("/Users")
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 p0.children.forEach {
                     val user = it.getValue(User::class.java)
-                    var k=0
-
-
-                        if (user != null && user.uid != FirebaseAuth.getInstance().uid){
-                            for (i in interest!!) {
-                                for(j in user.interested!!)
-                            if(i==j) {
-                               ++k
-                            }
-                            }
-                            if(k>0){
-                                adapter.add(UserItem(user))
-                            }
+                    var k = 0
+                    if (user != null && user.uid != FirebaseAuth.getInstance().uid) {
+                        for (i in interest!!) {
+                            for (j in user.interested!!)
+                                if (i == j) {
+                                    ++k
+                                }
+                        }
+                        if (k > 0) {
+                            adapter.add(UserItem(user))
+                        }
+                    }
                 }
-                }
+
                 adapter.setOnItemClickListener { item, view ->
-
-                    val userItem=item as UserItem
-                    val intent= Intent(view.context, ChatLog::class.java)
-                    intent.putExtra(Feeds.USER_KEY,userItem.user)
+                    val userItem = item as UserItem
+                    val intent = Intent(view.context, ChatLog::class.java)
+                    intent.putExtra(Feeds.USER_KEY, userItem.user)
                     startActivity(intent)
-
-
-
                 }
 
                 recyclerView.adapter = adapter
             }
+
             override fun onCancelled(error: DatabaseError) {
 
             }
         })
 
         return rootView
-
     }
 
-
-
-
     companion object {
-        var about:String?=null
-        var currentUser:User?=null
-        var interest:ArrayList<String>?=null
-        val USER_KEY="MeetUpPage"
+        var about: String? = null
+        var currentUser: User? = null
+        var interest: ArrayList<String>? = null
+        val USER_KEY = "MeetUpPage"
+
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
@@ -157,42 +140,42 @@ class Feeds : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
-        }
     }
+}
 
 
-
-    class UserItem(val user:User): Item<GroupieViewHolder>(){
+class UserItem(val user: User) : Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        val uid=FirebaseAuth.getInstance().uid
-        val ref=FirebaseDatabase.getInstance().getReference("/Friends/$uid/Friends_List")
+        val uid = FirebaseAuth.getInstance().uid
+        val ref = FirebaseDatabase.getInstance().getReference("/Friends/$uid/Friends_List")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             @RequiresApi(Build.VERSION_CODES.P)
             override fun onDataChange(p0: DataSnapshot) {
                 var bool = false
                 p0.children.forEach {
                     val user1 = it.getValue(Friends_List::class.java)
-                    Log.d("Dhanush2","${user.uid}")
                     if (user1?.uid == user!!.uid) {
-                        Log.d("Dhanush1","${user1?.uid}")
-                         bool = true
+                        bool = true
                     }
                 }
-                if(bool==true)
-                    viewHolder.itemView.findViewById<TextView>(R.id.iffriends).text="Your friend"
+                if (bool == true)
+                    viewHolder.itemView.findViewById<TextView>(R.id.iffriends).text = "Tap to Chat with you friend"
                 else
-                    viewHolder.itemView.findViewById<TextView>(R.id.iffriends).text="Send a hello request"
+                    viewHolder.itemView.findViewById<TextView>(R.id.iffriends).text = "Tap to Send a hello request"
             }
+
             override fun onCancelled(error: DatabaseError) {
 
             }
         })
-
-        viewHolder.itemView.findViewById<TextView>(R.id.interestedfeeds).text= user.interested.toString()
+        viewHolder.itemView.findViewById<TextView>(R.id.aboutfeeds).text = user.about
+        val string = user.interested.toString()
+        viewHolder.itemView.findViewById<TextView>(R.id.interestedfeeds).text =
+            string.subSequence(1, string.length - 1)
         viewHolder.itemView.findViewById<TextView>(R.id.displaynamefeeds).text = user.name
-            Picasso.with(viewHolder.itemView.context).load(user.profilepic)
-                .into(viewHolder.itemView.findViewById<ImageView>(R.id.dpfeeds))
-        }
+        Picasso.with(viewHolder.itemView.context).load(user.profilepic)
+            .into(viewHolder.itemView.findViewById<ImageView>(R.id.dpfeeds))
+    }
 
     override fun getLayout(): Int {
         return R.layout.feeds

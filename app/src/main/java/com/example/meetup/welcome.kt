@@ -24,9 +24,9 @@ import com.google.firebase.ktx.Firebase
 
 
 class welcome : AppCompatActivity() {
-    private companion object{
-        private const val TAG="signup"
-        private const val RC_SIGN_IN=78
+    private companion object {
+        private const val TAG = "signup"
+        private const val RC_SIGN_IN = 78
     }
 
     private lateinit var googleSignInClient: GoogleSignInClient
@@ -46,12 +46,12 @@ class welcome : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        findViewById<Button>(R.id.signupwithEmail).setOnClickListener{
+        findViewById<Button>(R.id.signupwithEmail).setOnClickListener {
             val intent = Intent(this, login::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }
-        findViewById<Button>(R.id.signupwithgoogle).setOnClickListener{
+        findViewById<Button>(R.id.signupwithgoogle).setOnClickListener {
             val signInIntent = googleSignInClient.signInIntent
             startActivityForResult(signInIntent, RC_SIGN_IN)
 
@@ -69,7 +69,7 @@ class welcome : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        Log.w(TAG,"Signup"+requestCode)
+        Log.w(TAG, "Signup" + requestCode)
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
@@ -94,19 +94,16 @@ class welcome : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
-                    val user=auth.currentUser
-                    val ref=FirebaseDatabase.getInstance().getReference("/Users")
+                    val user = auth.currentUser
+                    val ref = FirebaseDatabase.getInstance().getReference("/Users")
                     ref.addListenerForSingleValueEvent(object : ValueEventListener {
                         @RequiresApi(Build.VERSION_CODES.P)
                         override fun onDataChange(p0: DataSnapshot) {
                             var bool = false
                             p0.children.forEach {
                                 val user1 = it.getValue(User::class.java)
-                                Log.d("Dhanush1","${user!!.email}")
                                 if (user1?.email == user!!.email) {
-                                    Log.d("Dhanush1","${user1?.uid}")
                                     bool = true
-
                                 }
                             }
                             if (bool == false) {
@@ -114,12 +111,14 @@ class welcome : AppCompatActivity() {
                                 val intent = Intent(this@welcome, Interested::class.java)
                                 startActivity(intent)
                                 finish()
-                            }else{
+                            } else {
+                                Toast.makeText(this@welcome, "Welcome back!"+" "+"${user!!.displayName}", Toast.LENGTH_LONG).show()
                                 val intent = Intent(this@welcome, home::class.java)
                                 startActivity(intent)
                                 finish()
                             }
                         }
+
                         override fun onCancelled(error: DatabaseError) {
 
                         }
@@ -132,12 +131,12 @@ class welcome : AppCompatActivity() {
             }
     }
 
-    private fun savetoFirebaseatabase(uid:String,username:String,email:String,profile:String) {
-        val ref= FirebaseDatabase.getInstance().getReference("/Users/$uid")
-        val user=User(uid,username,email,profile)
+    private fun savetoFirebaseatabase(uid: String, username: String, email: String, profile: String) {
+        val ref = FirebaseDatabase.getInstance().getReference("/Users/$uid")
+        val user = User(uid, username, email, profile)
         ref.setValue(user)
-            .addOnSuccessListener{
-                Log.d("SignUp","Finally we saved the user to Firebase Database")
+            .addOnSuccessListener {
+                Log.d("SignUp", "Finally we saved the user to Firebase Database")
             }
     }
 }

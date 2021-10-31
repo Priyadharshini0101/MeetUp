@@ -32,33 +32,29 @@ class home : AppCompatActivity() {
         Interested()
         About()
         navigate()
-      }
+    }
 
     private fun verifyUserLoginDetails() {
         val uid = FirebaseAuth.getInstance().uid
-
 
         if (uid == null) {
             val intent = Intent(this, welcome::class.java)
             startActivity(intent)
             finish()
         }
-
     }
-    private fun Interested(){
+
+    private fun Interested() {
         val uid = FirebaseAuth.getInstance().uid
-        val ref=FirebaseDatabase.getInstance().getReference("/Users/$uid")
+        val ref = FirebaseDatabase.getInstance().getReference("/Users/$uid")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             @RequiresApi(Build.VERSION_CODES.P)
             override fun onDataChange(p0: DataSnapshot) {
                 var bool = false
-                    val user1 = p0.getValue(User::class.java)
-                    Log.d("Dhanush1","${user1?.interested}")
-                    if (user1?.interested.toString()=="[]") {
-                        Log.d("Dhanush1","${user1?.interested}")
-                        bool = true
-
-                    }
+                val user1 = p0.getValue(User::class.java)
+                if (user1?.interested.toString() == "[]") {
+                    bool = true
+                }
 
                 if (bool == true) {
                     val intent = Intent(this@home, Interested::class.java)
@@ -66,25 +62,24 @@ class home : AppCompatActivity() {
                     finish()
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {
 
             }
         })
 
     }
-    private fun About(){
+
+    private fun About() {
         val uid = FirebaseAuth.getInstance().uid
-        val ref=FirebaseDatabase.getInstance().getReference("/Users/$uid")
+        val ref = FirebaseDatabase.getInstance().getReference("/Users/$uid")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             @RequiresApi(Build.VERSION_CODES.P)
             override fun onDataChange(p0: DataSnapshot) {
                 var bool = false
                 val user1 = p0.getValue(User::class.java)
-                Log.d("Dhanush1","${user1?.interested}")
-                if (user1?.about.toString()=="") {
-                    Log.d("Dhanush1","${user1?.interested}")
+                if (user1?.about.toString() == "") {
                     bool = true
-
                 }
 
                 if (bool == true) {
@@ -93,19 +88,18 @@ class home : AppCompatActivity() {
                     finish()
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {
 
             }
         })
     }
 
-
-
-    private fun navigate(){
-    val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigation)
-    val navController=findNavController(R.id.fragmentContainerView)
-    val appBarConfiguration= AppBarConfiguration(setOf(R.id.feeds,R.id.chatting,R.id.profile))
-    setupActionBarWithNavController(navController,appBarConfiguration)
-    bottomNavigationView.setupWithNavController(navController)
+    private fun navigate() {
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigation)
+        val navController = findNavController(R.id.fragmentContainerView)
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.feeds, R.id.chatting, R.id.profile))
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        bottomNavigationView.setupWithNavController(navController)
     }
 }

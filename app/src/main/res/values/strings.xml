@@ -36,5 +36,10 @@
     <string name="continue_with_google">Continue with Google</string>
     <string name="continue_with_email">Continue with Email</string>
     <string name="or">OR</string>
-
+    <string name="username">Username</string>
+    <string name="message">Message</string>
+    <string name="logout">Logout</string>
+    <string name="friends">Friends</string>
+    <string name="editprofile">EditProfile</string>
+    <string name="interested_in">Interested in</string>
 </resources>
