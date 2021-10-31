@@ -44,7 +44,7 @@ class login : AppCompatActivity() {
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (!it.isSuccessful) return@addOnCompleteListener
-                Toast.makeText(this, "Welcome back!"+" "+"${username}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Welcome back!", Toast.LENGTH_LONG).show()
                 Log.d("Login", "${it.result?.user?.uid}")
                 val intent = Intent(this, home::class.java)
                 startActivity(intent)
