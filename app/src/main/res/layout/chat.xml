@@ -7,7 +7,7 @@
 
 
     <TextView
-        android:id="@+id/displaytext"
+        android:id="@+id/friendsname"
         android:layout_width="250dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
@@ -19,11 +19,11 @@
         android:fontFamily="sans-serif-light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.024"
-        app:layout_constraintStart_toEndOf="@+id/selectphotoCircleImage1"
+        app:layout_constraintStart_toEndOf="@id/friendsdp"
         app:layout_constraintTop_toTopOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/selectphotoCircleImage1"
+        android:id="@+id/friendsdp"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/ic_baseline_account_circle_24"

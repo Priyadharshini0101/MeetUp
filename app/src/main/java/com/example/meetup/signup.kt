@@ -35,6 +35,7 @@ class signup : AppCompatActivity() {
             Toast.makeText(this,"Please enter you email address or password",Toast.LENGTH_LONG).show()
             return
         }
+
         Log.d("SignUp","Email and Password: "+email+"$password")
 
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)

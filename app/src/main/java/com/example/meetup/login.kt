@@ -36,6 +36,7 @@ class login : AppCompatActivity() {
                 .show()
             return
         }
+
         Log.d("Login","Email and Password: "+email+"$password")
 
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password)
@@ -52,6 +53,7 @@ class login : AppCompatActivity() {
                 Toast.makeText(this,"${it.message}", Toast.LENGTH_LONG).show()
             }
     }
+
     @Override
     override fun onBackPressed() {
         val intent =Intent(this@login,welcome::class.java)

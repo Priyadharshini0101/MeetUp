@@ -13,5 +13,28 @@
     <string name="category_music">Music</string>
     <string name="category_arts">Arts</string>
     <string name="category_traveling">Traveling</string>
+    <string name="say_about_yourself">Say About yourself</string>
+    <string name="next">NEXT</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="about">About</string>
+    <string name="personal_information">Personal Information</string>
+    <string name="phone_number">Phone number</string>
+    <string name="birthday">Birthday</string>
+    <string name="choose_upto_3_interest">Choose upto 3 interest</string>
+    <string name="sports">Sports</string>
+    <string name="technology">Technology</string>
+    <string name="music">MUSIC</string>
+    <string name="traveling">Traveling</string>
+    <string name="arts">Arts</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="signup">SignUp</string>
+    <string name="already_have_a_account">Already have a account?</string>
+    <string name="continue_with_facebook">Continue with facebook</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="continue_with_email">Continue with Email</string>
+    <string name="or">OR</string>
 
 </resources>

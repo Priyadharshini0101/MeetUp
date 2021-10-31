@@ -177,7 +177,8 @@ class LatestMessage(val chatMessage: ChatMessage) : Item<GroupieViewHolder>(){
         when(item?.itemId){
             R.id.action_newmessage -> {
                 activity?.let {
-
+                   val intent=Intent(it,NewMessage::class.java)
+                    startActivity(intent)
 
                 }
             }

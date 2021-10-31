@@ -4,9 +4,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
@@ -14,9 +12,11 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.editprofile.*
+import kotlinx.android.synthetic.main.editprofile.view.*
+import kotlinx.android.synthetic.main.profile.view.*
 import kotlinx.android.synthetic.main.profile.*
-import kotlinx.android.synthetic.main.profile1.*
-import kotlinx.android.synthetic.main.profile1.view.*
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,7 +46,7 @@ class profile : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val rootView= inflater.inflate(R.layout.profile1, container, false)
+        val rootView= inflater.inflate(R.layout.profile, container, false)
 
         rootView.editprofile.setOnClickListener {
             activity?.let {
@@ -55,108 +55,100 @@ class profile : Fragment() {
             }
         }
 
-        val uid=FirebaseAuth.getInstance().uid
-
-
-
-        val ref1 = FirebaseDatabase.getInstance().getReference("/Users/$uid")
-
-        ref1.addListenerForSingleValueEvent(object : ValueEventListener {
-            @RequiresApi(Build.VERSION_CODES.P)
-            override fun onDataChange(p0: DataSnapshot) {
-                val user=p0.getValue(User::class.java)
-                if (user != null) {
-                    if (user.profilepic!="") {
-                        displayname.setText(user.name)
-                        Picasso.with(context).load(user.profilepic).into(dp)
-
-                        interested.text=user.interested.toString()
-
-                    } else {
-                        displayname.setText(user.name)
-                        interested.text=user.interested.toString()
-                    }
-                   loading_spinner1.visibility = View.GONE
-                }
+        rootView.friends.setOnClickListener {
+            activity?.let {
+                val intent = Intent(it, NewMessage::class.java)
+                it.startActivity(intent)
             }
+        }
 
-            override fun onCancelled(error: DatabaseError) {
+            val uid = FirebaseAuth.getInstance().uid
+            val ref1 = FirebaseDatabase.getInstance().getReference("/Users/$uid")
 
-            }
-        })
-        val ref2 = FirebaseDatabase.getInstance().getReference("/Users/")
-        ref2.addChildEventListener(object : ChildEventListener {
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                snapshot.children.forEach {
-                    val user = snapshot.getValue(User::class.java)
-                    if (user != null && user.uid == FirebaseAuth.getInstance().uid) {
-                        if (user.profilepic !=null) {
+            ref1.addListenerForSingleValueEvent(object : ValueEventListener {
+                @RequiresApi(Build.VERSION_CODES.P)
+                override fun onDataChange(p0: DataSnapshot) {
+                    val user = p0.getValue(User::class.java)
+                    if (user != null) {
+                        if (user.profilepic != "") {
                             displayname.setText(user.name)
                             Picasso.with(context).load(user.profilepic).into(dp)
-
-
-
+                            interested.text = user.interested.toString()
+                            aboutprofile.text=user.about.toString()
 
                         } else {
-                            displayname.text = user.name
-
+                            displayname.setText(user.name)
+                            interested.text = user.interested.toString()
+                            aboutprofile.text=user.about.toString()
                         }
-                       loading_spinner1.visibility = View.GONE
+                        loading_spinner1.visibility = View.GONE
                     }
                 }
-            }
 
-            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                override fun onCancelled(error: DatabaseError) {
 
-            }
+                }
+            })
 
-            override fun onChildRemoved(snapshot: DataSnapshot) {
+            val ref2 = FirebaseDatabase.getInstance().getReference("/Users/")
 
-            }
+            ref2.addChildEventListener(object : ChildEventListener {
+                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                    snapshot.children.forEach {
+                        val user = snapshot.getValue(User::class.java)
+                        if (user != null && user.uid == FirebaseAuth.getInstance().uid) {
+                            if (user.profilepic != null) {
+                                displayname.setText(user.name)
+                                Picasso.with(context).load(user.profilepic).into(dp)
+                                aboutprofile.text=user.about.toString()
+                            } else {
+                                displayname.text = user.name
+                                aboutprofile.text=user.about.toString()
+                            }
+                            loading_spinner1.visibility = View.GONE
+                        }
+                    }
+                }
 
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
 
-            }
+                }
 
-            override fun onCancelled(error: DatabaseError) {
+                override fun onChildRemoved(snapshot: DataSnapshot) {
 
-            }
-        })
+                }
 
-        setHasOptionsMenu(true)
-        return rootView
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item?.itemId){
-            R.id.action_settings -> {
+                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+            })
+
+            rootView.logout.setOnClickListener {
                 activity?.let {
                     val alert: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(it)
-                        alert.setMessage("Are you sure you want to Signout?")
-                            .setPositiveButton("YES", DialogInterface.OnClickListener { dialog, which ->
-                                Firebase.auth.signOut()
-                                val intent=Intent(it,welcome::class.java)
-                                intent.flags= Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                startActivity(intent)
+                    alert.setMessage("Are you sure you want to Signout?")
+                        .setPositiveButton("YES", DialogInterface.OnClickListener { dialog, which ->
+                            Firebase.auth.signOut()
+                            val intent = Intent(it, welcome::class.java)
+                            intent.flags =
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
 
-                            }).setNegativeButton("NO", null)
+                        }).setNegativeButton("NO", null)
 
-                        val alert1: android.app.AlertDialog? = alert.create()
-                        if (alert1 != null) {
-                            alert1.show()
-                        }
-
+                    val alert1: android.app.AlertDialog? = alert.create()
+                    if (alert1 != null) {
+                        alert1.show()
                     }
                 }
             }
 
-
-        return super.onOptionsItemSelected(item)
+        return rootView
     }
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-         inflater.inflate(R.menu.settingmenu,menu)
-        return super.onCreateOptionsMenu(menu,inflater)
-    }
-
 
     companion object {
         /**

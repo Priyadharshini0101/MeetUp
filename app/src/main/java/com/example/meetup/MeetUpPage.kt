@@ -2,12 +2,15 @@ package com.example.meetup
 
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -40,13 +43,13 @@ class Feeds : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    var interesting:ArrayList<String>?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
-            interesting=it.getParcelable(Interested.USER_KEY1)
+
 
         }
     }
@@ -61,7 +64,7 @@ class Feeds : Fragment() {
 
         val rootView =inflater.inflate(R.layout.meetup, container, false)
 
-        Log.d("Dhanush","$interesting")
+
 //        interesting=getParcelableExtra<ArrayList>(Interested.USER_KEY1)
         val recyclerView=  rootView.recycleView
         val adapter= GroupAdapter<GroupieViewHolder>()
@@ -74,6 +77,7 @@ class Feeds : Fragment() {
                 Feeds.currentUser =snapshot.getValue(User::class.java)
                 if(Feeds.currentUser?.interested!=null){
                     Feeds.interest = Feeds.currentUser!!.interested
+                    Feeds.about=Feeds.currentUser!!.about
                 }
 
             }
@@ -82,6 +86,7 @@ class Feeds : Fragment() {
 
             }
         })
+
 
         Log.d("Dhanush","${Feeds.interest}")
 
@@ -131,6 +136,7 @@ class Feeds : Fragment() {
 
 
     companion object {
+        var about:String?=null
         var currentUser:User?=null
         var interest:ArrayList<String>?=null
         val USER_KEY="MeetUpPage"
@@ -158,6 +164,29 @@ class Feeds : Fragment() {
 
     class UserItem(val user:User): Item<GroupieViewHolder>(){
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+        val uid=FirebaseAuth.getInstance().uid
+        val ref=FirebaseDatabase.getInstance().getReference("/Friends/$uid/Friends_List")
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            @RequiresApi(Build.VERSION_CODES.P)
+            override fun onDataChange(p0: DataSnapshot) {
+                var bool = false
+                p0.children.forEach {
+                    val user1 = it.getValue(Friends_List::class.java)
+                    Log.d("Dhanush2","${user.uid}")
+                    if (user1?.uid == user!!.uid) {
+                        Log.d("Dhanush1","${user1?.uid}")
+                         bool = true
+                    }
+                }
+                if(bool==true)
+                    viewHolder.itemView.findViewById<TextView>(R.id.iffriends).text="Your friend"
+                else
+                    viewHolder.itemView.findViewById<TextView>(R.id.iffriends).text="Send a hello request"
+            }
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
 
         viewHolder.itemView.findViewById<TextView>(R.id.interestedfeeds).text= user.interested.toString()
         viewHolder.itemView.findViewById<TextView>(R.id.displaynamefeeds).text = user.name
