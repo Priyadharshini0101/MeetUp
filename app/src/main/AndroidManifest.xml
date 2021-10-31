@@ -10,27 +10,33 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MeetUp">
-        <activity android:name=".Activity"></activity>
+
         <activity android:name=".welcome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".signup"></activity>
+        <activity android:name=".signup">
+
+        </activity>
         <activity android:name=".About">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
+
         </activity>
-        <activity android:name=".login"></activity>
+        <activity android:name=".login">
+
+        </activity>
         <activity android:name=".Interested">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
+
         </activity>
-        <activity android:name=".EditProfile"></activity>
-        <activity android:name=".ChatLog"></activity>
-        <activity android:name=".NewMessage"></activity>
+        <activity android:name=".EditProfile">
+
+        </activity>
+        <activity android:name=".ChatLog">
+
+        </activity>
+        <activity android:name=".NewMessage">
+
+        </activity>
         <activity android:name=".home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
