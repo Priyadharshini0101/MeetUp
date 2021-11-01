@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/feeds"
         android:name="com.example.meetup.Feeds"
-        android:label="Home"
+        android:label="@string/home"
         tools:layout="@layout/meetup" >
         <action
             android:id="@+id/action_feeds_to_chatting"
@@ -17,8 +17,8 @@
     <fragment
         android:id="@+id/chatting"
         android:name="com.example.meetup.chatting"
-        android:label="Chats"
-        tools:layout="@layout/posts" >
+        android:label="@string/chats"
+        tools:layout="@layout/newmessage" >
         <action
             android:id="@+id/action_chatting_to_friends"
             app:destination="@id/profile" />
@@ -28,6 +28,6 @@
     <fragment
         android:id="@+id/profile"
         android:name="com.example.meetup.profile"
-        android:label="Profile"
+        android:label="@string/profile"
         tools:layout="@layout/profile" />
 </navigation>

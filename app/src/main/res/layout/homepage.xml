@@ -16,9 +16,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/navigationmenu"
-        app:itemRippleColor="@color/black"
-        app:labelVisibilityMode="unlabeled"
-        app:itemTextColor="@color/black"
+        app:itemRippleColor="@color/white"
+        app:labelVisibilityMode="selected"
+        app:itemTextColor="@drawable/selector"
         app:itemIconTint="@drawable/selector" />
 
     <fragment

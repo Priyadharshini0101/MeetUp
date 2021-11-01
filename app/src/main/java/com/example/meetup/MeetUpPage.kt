@@ -15,15 +15,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.feeds.*
 import kotlinx.android.synthetic.main.homepage.*
 import kotlinx.android.synthetic.main.meetup.view.*
@@ -94,16 +92,39 @@ class Feeds : Fragment() {
                                 }
                         }
                         if (k > 0) {
-                            adapter.add(UserItem(user))
+                            val uid = FirebaseAuth.getInstance().uid
+                            val ref = FirebaseDatabase.getInstance()
+                                .getReference("/Friends/$uid/Friends_List")
+                            ref.addListenerForSingleValueEvent(object : ValueEventListener {
+                                @RequiresApi(Build.VERSION_CODES.P)
+                                override fun onDataChange(p0: DataSnapshot) {
+                                    var bool = false
+                                    var activity: Active? = null
+                                    p0.children.forEach {
+                                        val user1 = it.getValue(Friends_List::class.java)
+                                        if (user1?.uid == user!!.uid) {
+                                            bool = true
+                                        }
+                                    }
+                                    if (bool == false) {
+                                        adapter.add(UserItem(user))
+                                    }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+
+                                }
+                            })
                         }
+
                     }
                 }
-
                 adapter.setOnItemClickListener { item, view ->
                     val userItem = item as UserItem
                     val intent = Intent(view.context, ChatLog::class.java)
-                    intent.putExtra(Feeds.USER_KEY, userItem.user)
+                    intent.putExtra(USER_KEY, userItem.user)
                     startActivity(intent)
+
                 }
 
                 recyclerView.adapter = adapter
@@ -114,10 +135,99 @@ class Feeds : Fragment() {
 
             }
         })
-
+        listentoMessage()
+        fetchCurrentUser()
         return rootView
     }
+    val latestMessageHashMap = HashMap<String, ChatMessage>()
+    val adapter = GroupAdapter<GroupieViewHolder>()
+    private fun refreshTheLatestMessage() {
+        adapter.clear()
+        latestMessageHashMap.values.forEach {
+            adapter.add(LatestMessage(it))
+            Log.d("ChatMessage.text", it.text)
+        }
+    }
 
+
+    private fun listentoMessage() {
+        val fromId = FirebaseAuth.getInstance().uid
+        val ref = FirebaseDatabase.getInstance().getReference("/latestMessage/$fromId/")
+        ref.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val chatMessage = snapshot.getValue(ChatMessage::class.java) ?: return
+                latestMessageHashMap[snapshot.key!!] = chatMessage
+                refreshTheLatestMessage()
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                val chatMessage = snapshot.getValue(ChatMessage::class.java) ?: return
+                latestMessageHashMap[snapshot.key!!] = chatMessage
+                refreshTheLatestMessage()
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+    }
+
+    private fun fetchCurrentUser() {
+        val uid = FirebaseAuth.getInstance().uid
+        var currentUser1 = FirebaseDatabase.getInstance().getReference("/Users/$uid")
+        currentUser1.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                chatting.currentUser = snapshot.getValue(User::class.java)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+
+    }
+
+    class LatestMessage(val chatMessage: ChatMessage) : Item<GroupieViewHolder>() {
+        var chatPartnerUser: User? = null
+        override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+            viewHolder.itemView.findViewById<TextView>(R.id.newmessagetext).text = chatMessage.text
+            val chatPartnerId: String
+            if (chatMessage.fromId == FirebaseAuth.getInstance().uid) {
+                chatPartnerId = chatMessage.toId
+            } else {
+                chatPartnerId = chatMessage.fromId
+            }
+
+            val ref = FirebaseDatabase.getInstance().getReference("/Users/$chatPartnerId")
+            ref.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    chatPartnerUser = snapshot.getValue(User::class.java)
+                    viewHolder.itemView.findViewById<TextView>(R.id.newmessagename).text =
+                        chatPartnerUser?.name
+                    val displayPicture =
+                        viewHolder.itemView.findViewById<CircleImageView>(R.id.newmessageimage)
+                    Picasso.with(viewHolder.itemView.context).load(chatPartnerUser?.profilepic)
+                        .into(displayPicture)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+            })
+        }
+
+        override fun getLayout(): Int {
+            return R.layout.newmessage
+        }
+    }
     companion object {
         var about: String? = null
         var currentUser: User? = null
@@ -176,6 +286,7 @@ class UserItem(val user: User) : Item<GroupieViewHolder>() {
         viewHolder.itemView.findViewById<TextView>(R.id.displaynamefeeds).text = user.name
         Picasso.with(viewHolder.itemView.context).load(user.profilepic)
             .into(viewHolder.itemView.findViewById<ImageView>(R.id.dpfeeds))
+
     }
 
     override fun getLayout(): Int {

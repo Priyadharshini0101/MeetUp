@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.android.quakereport.EarthquakeActivity">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/action_chatting_to_friends"
-        android:title="Add friends"
+        android:title="@string/add_friends"
         android:orderInCategory="1" />
     <item
         android:id="@+id/action_remove"
-        android:title="Remove friends"
+        android:title="@string/remove_friends"
         android:orderInCategory="2"
         />
 

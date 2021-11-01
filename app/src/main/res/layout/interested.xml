@@ -35,6 +35,7 @@
       android:layout_width="175dp"
       android:layout_height="75dp"
       android:layout_margin="4dp"
+      android:textColor="@color/white"
       android:text="@string/sports" />
 
   <Button
@@ -42,6 +43,7 @@
       android:layout_width="175dp"
       android:layout_height="75dp"
       android:layout_margin="4dp"
+      android:textColor="@color/white"
       android:text="@string/technology" />
 
   <Button
@@ -49,6 +51,7 @@
       android:layout_width="175dp"
       android:layout_height="75dp"
       android:layout_margin="4dp"
+      android:textColor="@color/white"
       android:text="@string/music" />
 
   <Button
@@ -56,6 +59,7 @@
       android:layout_width="175dp"
       android:layout_height="75dp"
       android:layout_margin="4dp"
+      android:textColor="@color/white"
       android:text="@string/traveling" />
 
   <Button
@@ -63,6 +67,7 @@
       android:layout_width="175dp"
       android:layout_height="75dp"
       android:layout_margin="4dp"
+      android:textColor="@color/white"
       android:text="@string/arts" />
 
 
@@ -74,6 +79,7 @@
      android:layout_height="wrap_content"
      android:layout_marginTop="48dp"
      android:text="@string/next"
+     android:textColor="@color/white"
      app:layout_constraintEnd_toEndOf="parent"
      app:layout_constraintHorizontal_bias="0.498"
      app:layout_constraintStart_toStartOf="parent"

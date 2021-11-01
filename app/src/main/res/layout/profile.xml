@@ -50,11 +50,12 @@
 
     <TextView
         android:id="@+id/aboutprofile"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/about"
-        android:layout_gravity="center"
+        android:maxWidth="300dp"
+        android:gravity="center"
         android:textSize="16sp"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"

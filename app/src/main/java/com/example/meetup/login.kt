@@ -23,7 +23,7 @@ class login : AppCompatActivity() {
             performLogin()
         }
 
-        findViewById<TextView>(R.id.signpage1).setOnClickListener {
+        findViewById<TextView>(R.id.signpage2).setOnClickListener {
             val intent = Intent(this, signup::class.java)
             startActivity(intent)
             finish()

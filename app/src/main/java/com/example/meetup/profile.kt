@@ -12,8 +12,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.editprofile.*
-import kotlinx.android.synthetic.main.editprofile.view.*
 import kotlinx.android.synthetic.main.profile.view.*
 import kotlinx.android.synthetic.main.profile.*
 
@@ -57,7 +55,7 @@ class profile : Fragment() {
 
         rootView.friends.setOnClickListener {
             activity?.let {
-                val intent = Intent(it, NewMessage::class.java)
+                val intent = Intent(it,FriendList::class.java)
                 it.startActivity(intent)
             }
         }

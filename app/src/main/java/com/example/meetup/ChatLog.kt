@@ -65,7 +65,7 @@ class ChatLog : AppCompatActivity() {
                             if (user1?.uid == user!!.uid) {
                                 Toast.makeText(
                                     this@ChatLog,
-                                    "The person is already add to your friends list",
+                                    "${user!!.name}"+" "+"is already add to your friends list",
                                     Toast.LENGTH_LONG
                                 )
                                     .show()
@@ -77,6 +77,12 @@ class ChatLog : AppCompatActivity() {
                             val friend = Friends_List(user!!.uid, user!!.name, user!!.email, user!!.profilepic, user!!.interested.toString(), user!!.about
                             )
                             ref1.child("Friends_List/${user!!.uid}").setValue(friend)
+                            Toast.makeText(
+                                this@ChatLog,
+                                "${user!!.name}"+" "+"is add to your friends list",
+                                Toast.LENGTH_LONG
+                            )
+                                .show()
                         }
                     }
 
@@ -96,7 +102,12 @@ class ChatLog : AppCompatActivity() {
                             p0.children.forEach {
                                 val user1 = it.getValue(Friends_List::class.java)
                                 if (user1?.uid == user!!.uid) {
-
+                                    Toast.makeText(
+                                        this@ChatLog,
+                                        "${user!!.name}"+" "+"is removed from your friends list",
+                                        Toast.LENGTH_LONG
+                                    )
+                                        .show()
                                     bool = true
                                 }
                             }
@@ -106,7 +117,7 @@ class ChatLog : AppCompatActivity() {
                                 )
                                 ref1.child("Friends_List/${user!!.uid}").removeValue()
                             }else{
-                                Toast.makeText(this@ChatLog,"The person is not in your friends list",Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@ChatLog,"${user!!.name}"+" " +"is not in your friends list",Toast.LENGTH_LONG).show()
                             }
                         }
 
@@ -130,9 +141,6 @@ class ChatLog : AppCompatActivity() {
         val toId = user?.uid
         val ref = FirebaseDatabase.getInstance().getReference("/user-message/$fromId/$toId")
         ref.addChildEventListener(object : ChildEventListener {
-            override fun onCancelled(error: DatabaseError) {
-
-            }
 
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val chatMessage = snapshot.getValue(ChatMessage::class.java)
@@ -160,6 +168,10 @@ class ChatLog : AppCompatActivity() {
             override fun onChildRemoved(snapshot: DataSnapshot) {
 
             }
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
         })
     }
 
@@ -197,7 +209,7 @@ class ChatLog : AppCompatActivity() {
 class ChatFrom(val text: String, val user: User) : Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.findViewById<TextView>(R.id.chatname1).text = user.name
-        viewHolder.itemView.findViewById<TextView>(R.id.chat_from).text = text
+        viewHolder.itemView.findViewById<TextView>(R.id.chat_fromid).text = text
         val displayPicture = viewHolder.itemView.userfrom_dp
         Picasso.with(viewHolder.itemView.context).load(user.profilepic).into(displayPicture)
     }
@@ -210,7 +222,7 @@ class ChatFrom(val text: String, val user: User) : Item<GroupieViewHolder>() {
 class ChatTo(val text: String, val user: User) : Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.findViewById<TextView>(R.id.chatname).text = user.name
-        viewHolder.itemView.findViewById<TextView>(R.id.chat_to).text = text
+        viewHolder.itemView.findViewById<TextView>(R.id.chat_toid).text = text
         val displayPicture = viewHolder.itemView.userto_dp
         Picasso.with(viewHolder.itemView.context).load(user.profilepic).into(displayPicture)
     }

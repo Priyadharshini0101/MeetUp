@@ -147,6 +147,7 @@ class chatting : Fragment() {
                         viewHolder.itemView.findViewById<CircleImageView>(R.id.newmessageimage)
                     Picasso.with(viewHolder.itemView.context).load(chatPartnerUser?.profilepic)
                         .into(displayPicture)
+
                 }
 
                 override fun onCancelled(error: DatabaseError) {

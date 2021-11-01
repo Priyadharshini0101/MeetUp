@@ -12,10 +12,8 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.profile.*
-import java.util.*
 
-class NewMessage : AppCompatActivity() {
+class FriendList : AppCompatActivity() {
     private lateinit var database: FirebaseDatabase
 
 
