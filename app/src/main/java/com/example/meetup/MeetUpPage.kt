@@ -257,28 +257,7 @@ class Feeds : Fragment() {
 
 class UserItem(val user: User) : Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        val uid = FirebaseAuth.getInstance().uid
-        val ref = FirebaseDatabase.getInstance().getReference("/Friends/$uid/Friends_List")
-        ref.addListenerForSingleValueEvent(object : ValueEventListener {
-            @RequiresApi(Build.VERSION_CODES.P)
-            override fun onDataChange(p0: DataSnapshot) {
-                var bool = false
-                p0.children.forEach {
-                    val user1 = it.getValue(Friends_List::class.java)
-                    if (user1?.uid == user!!.uid) {
-                        bool = true
-                    }
-                }
-                if (bool == true)
-                    viewHolder.itemView.findViewById<TextView>(R.id.iffriends).text = "Chat with your friend"
-                else
-                    viewHolder.itemView.findViewById<TextView>(R.id.iffriends).text = "Tap to Send a hello request"
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-        })
         viewHolder.itemView.findViewById<TextView>(R.id.aboutfeeds).text = user.about
         val string = user.interested.toString()
         viewHolder.itemView.findViewById<TextView>(R.id.interestedfeeds).text =
