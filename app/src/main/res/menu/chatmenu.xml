@@ -6,10 +6,13 @@
 
     <item
         android:id="@+id/action_chatting_to_friends"
-        android:title="New Message"
-        android:icon="@drawable/ic_baseline_person_add_alt_1_24"
-        android:orderInCategory="1"
-        app:showAsAction="ifRoom"/>
+        android:title="Add friends"
+        android:orderInCategory="1" />
+    <item
+        android:id="@+id/action_remove"
+        android:title="Remove friends"
+        android:orderInCategory="2"
+        />
 
 
 </menu>

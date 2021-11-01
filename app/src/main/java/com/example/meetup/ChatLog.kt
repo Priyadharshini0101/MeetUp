@@ -62,7 +62,6 @@ class ChatLog : AppCompatActivity() {
                         var activity: Active? = null
                         p0.children.forEach {
                             val user1 = it.getValue(Friends_List::class.java)
-                            Log.d("Dhanush1", "${user1?.uid}")
                             if (user1?.uid == user!!.uid) {
                                 Toast.makeText(
                                     this@ChatLog,
@@ -85,6 +84,36 @@ class ChatLog : AppCompatActivity() {
 
                     }
                 })
+            }
+            R.id.action_remove -> {
+                    val uid = FirebaseAuth.getInstance().uid
+                    val ref = FirebaseDatabase.getInstance().getReference("/Friends/$uid/Friends_List")
+                    ref.addListenerForSingleValueEvent(object : ValueEventListener {
+                        @RequiresApi(Build.VERSION_CODES.P)
+                        override fun onDataChange(p0: DataSnapshot) {
+                            var bool = false
+                            var activity: Active? = null
+                            p0.children.forEach {
+                                val user1 = it.getValue(Friends_List::class.java)
+                                if (user1?.uid == user!!.uid) {
+
+                                    bool = true
+                                }
+                            }
+                            if (bool == true) {
+                                val ref1 = FirebaseDatabase.getInstance().getReference("/Friends/${uid}")
+                                val friend = Friends_List(user!!.uid, user!!.name, user!!.email, user!!.profilepic, user!!.interested.toString(), user!!.about
+                                )
+                                ref1.child("Friends_List/${user!!.uid}").removeValue()
+                            }else{
+                                Toast.makeText(this@ChatLog,"The person is not in your friends list",Toast.LENGTH_LONG).show()
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+
+                        }
+                    })
             }
         }
 

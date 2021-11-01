@@ -51,7 +51,7 @@ class chatting : Fragment() {
         val rootView = inflater.inflate(R.layout.meetup, container, false)
         var intent: Boolean? = false
         val recyclerView = rootView.recycleView
-
+        rootView.loading_spinner5.visibility=View.GONE
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
 

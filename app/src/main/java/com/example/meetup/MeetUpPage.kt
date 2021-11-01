@@ -107,6 +107,7 @@ class Feeds : Fragment() {
                 }
 
                 recyclerView.adapter = adapter
+                rootView.loading_spinner5.visibility=View.GONE
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -159,7 +160,7 @@ class UserItem(val user: User) : Item<GroupieViewHolder>() {
                     }
                 }
                 if (bool == true)
-                    viewHolder.itemView.findViewById<TextView>(R.id.iffriends).text = "Tap to Chat with you friend"
+                    viewHolder.itemView.findViewById<TextView>(R.id.iffriends).text = "Chat with your friend"
                 else
                     viewHolder.itemView.findViewById<TextView>(R.id.iffriends).text = "Tap to Send a hello request"
             }
