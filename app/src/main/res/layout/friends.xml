@@ -26,14 +26,16 @@
 
     <TextView
         android:id="@+id/friendsabout"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:text="About"
+        android:layout_marginStart="16dp"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.057"
         app:layout_constraintStart_toEndOf="@+id/friendsdp"
-        app:layout_constraintTop_toBottomOf="@+id/friendsname" />
+        app:layout_constraintTop_toBottomOf="@+id/friendsname"
+        android:layout_marginLeft="16dp" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/friendsdp"
