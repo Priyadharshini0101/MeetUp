@@ -42,8 +42,8 @@
     <string name="friends">Friends</string>
     <string name="editprofile">EditProfile</string>
     <string name="interested_in">Interested in</string>
-    <string name="add_friends">Add friends</string>
-    <string name="remove_friends">Remove friends</string>
+    <string name="add_friend">Add friend</string>
+    <string name="remove_friend">Remove friend</string>
     <string name="home">Home</string>
     <string name="chats">Chats</string>
     <string name="profile">Profile</string>

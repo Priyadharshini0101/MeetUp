@@ -20,7 +20,7 @@
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/aboutfeeds" />
+        app:layout_constraintTop_toBottomOf="@id/aboutfeeds" />
 
     <TextView
         android:id="@+id/aboutfeeds"
@@ -35,7 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/displaynamefeeds" />
+        app:layout_constraintTop_toBottomOf="@id/displaynamefeeds" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/dpfeeds"
@@ -63,7 +63,7 @@
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dpfeeds" />
+        app:layout_constraintTop_toBottomOf="@id/dpfeeds" />
 
 
     <TextView
@@ -78,7 +78,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/interestedfeeds"
+        app:layout_constraintTop_toBottomOf="@id/interestedfeeds"
         app:layout_constraintVertical_bias="0.26" />
 
 

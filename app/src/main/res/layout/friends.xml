@@ -33,8 +33,8 @@
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.057"
-        app:layout_constraintStart_toEndOf="@+id/friendsdp"
-        app:layout_constraintTop_toBottomOf="@+id/friendsname"
+        app:layout_constraintStart_toEndOf="@id/friendsdp"
+        app:layout_constraintTop_toBottomOf="@id/friendsname"
         android:layout_marginLeft="16dp" />
 
     <de.hdodenhof.circleimageview.CircleImageView

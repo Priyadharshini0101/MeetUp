@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/aboutprofile" />
+        app:layout_constraintTop_toBottomOf="@id/aboutprofile" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/dp"
@@ -60,7 +60,7 @@
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/displayname" />
+        app:layout_constraintTop_toBottomOf="@id/displayname" />
 
     <Button
         android:id="@+id/editprofile"
@@ -76,7 +76,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.542"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/friends" />
+        app:layout_constraintTop_toBottomOf="@id/friends" />
 
     <Button
         android:id="@+id/friends"
@@ -93,7 +93,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.542"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/interested" />
+        app:layout_constraintTop_toBottomOf="@id/interested" />
 
     <Button
         android:id="@+id/logout"
@@ -109,7 +109,7 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editprofile" />
+        app:layout_constraintTop_toBottomOf="@id/editprofile" />
 
     <ProgressBar
         android:id="@+id/loading_spinner1"

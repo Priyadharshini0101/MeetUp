@@ -33,7 +33,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signupwithEmail" />
+        app:layout_constraintTop_toBottomOf="@id/signupwithEmail" />
 
     <Button
         android:id="@+id/signupwithEmail"
@@ -50,7 +50,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.59"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toBottomOf="@id/textView7" />
 
     <View
         android:id="@+id/viewline"
@@ -61,7 +61,7 @@
         android:layout_marginTop="36dp"
         android:background="#7E7979"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signupwithgoogle" />
+        app:layout_constraintTop_toBottomOf="@id/signupwithgoogle" />
 
     <TextView
         android:id="@+id/textview1"
@@ -69,10 +69,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/or"
-        app:layout_constraintEnd_toStartOf="@+id/view1"
+        app:layout_constraintEnd_toStartOf="@id/view1"
         app:layout_constraintHorizontal_bias="0.476"
-        app:layout_constraintStart_toEndOf="@+id/viewline"
-        app:layout_constraintTop_toBottomOf="@+id/signupwithgoogle" />
+        app:layout_constraintStart_toEndOf="@id/viewline"
+        app:layout_constraintTop_toBottomOf="@id/signupwithgoogle" />
 
     <View
         android:id="@+id/view1"
@@ -83,7 +83,7 @@
         android:layout_marginRight="36dp"
         android:background="#7E7979"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signupwithgoogle" />
+        app:layout_constraintTop_toBottomOf="@id/signupwithgoogle" />
 
     <TextView
         android:id="@+id/ask"
@@ -95,10 +95,10 @@
         android:layout_marginTop="16dp"
         android:text="@string/don_t_have_an_account"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/signpage1"
+        app:layout_constraintEnd_toStartOf="@id/signpage1"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview1" />
+        app:layout_constraintTop_toBottomOf="@id/textview1" />
 
     <TextView
         android:id="@+id/signpage1"
@@ -111,7 +111,7 @@
         android:textColor="@color/blue"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview1" />
+        app:layout_constraintTop_toBottomOf="@id/textview1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

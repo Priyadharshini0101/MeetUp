@@ -28,7 +28,7 @@
      android:layout_marginTop="16dp"
      app:layout_constraintEnd_toEndOf="parent"
      app:layout_constraintStart_toStartOf="parent"
-     app:layout_constraintTop_toBottomOf="@+id/textView14">
+     app:layout_constraintTop_toBottomOf="@id/textView14">
 
   <Button
       android:id="@+id/sports"
@@ -83,6 +83,6 @@
      app:layout_constraintEnd_toEndOf="parent"
      app:layout_constraintHorizontal_bias="0.498"
      app:layout_constraintStart_toStartOf="parent"
-     app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
+     app:layout_constraintTop_toBottomOf="@id/gridLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

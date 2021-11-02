@@ -3,11 +3,11 @@
 
     <item
         android:id="@+id/action_chatting_to_friends"
-        android:title="@string/add_friends"
+        android:title="@string/add_friend"
         android:orderInCategory="1" />
     <item
         android:id="@+id/action_remove"
-        android:title="@string/remove_friends"
+        android:title="@string/remove_friend"
         android:orderInCategory="2"
         />
 

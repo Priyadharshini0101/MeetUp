@@ -23,8 +23,8 @@ class login : AppCompatActivity() {
             performLogin()
         }
 
-        findViewById<TextView>(R.id.signpage2).setOnClickListener {
-            val intent = Intent(this, signup::class.java)
+        findViewById<TextView>(R.id.signpageinlogin).setOnClickListener {
+            val intent = Intent(this, com.example.meetup.signup::class.java)
             startActivity(intent)
             finish()
         }
