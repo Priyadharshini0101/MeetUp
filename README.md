@@ -17,7 +17,7 @@ A Android Chat App "MeetUp" to chat with similar interest people.It filters the 
     <td><img src="https://github.com/user-attachments/assets/4e519af3-1fb5-449f-9087-ff9094b45b83" width="300" height="750"></td>
   </tr>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/352f99fc-04aa-421d-b92d-193a0460c484" width="300" height="750"></td>
     <td><img src="https://github.com/user-attachments/assets/a693a5c8-c004-4823-86ba-4dc042858c05" width="300" height="750"></td>
+    <td><img src="https://github.com/user-attachments/assets/352f99fc-04aa-421d-b92d-193a0460c484" width="300" height="750"></td>
   </tr>
 </table>
